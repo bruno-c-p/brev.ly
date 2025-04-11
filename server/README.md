@@ -1,9 +1,7 @@
 # Description and Requirements
-
 In this back-end project, an API will be developed to manage URL shortening.
 
 ## Features and Rules
-
 - [ ]  It should be possible to create a link
     - [ ]  It should not be possible to create a link with a poorly formatted shortened URL
     - [ ]  It should not be possible to create a link with an already existing shortened URL
@@ -18,9 +16,4 @@ In this back-end project, an API will be developed to manage URL shortening.
     - [ ]  The CSV should have fields such as original URL, shortened URL, access count, and creation date.
 
 ## Docker
-
 For this back-end project, you should build a `Dockerfile`, following best practices, which will be responsible for generating the application image.
-
-## Tips
-
-- Don't forget to enable CORS in the application.
