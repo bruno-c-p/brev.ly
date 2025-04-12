@@ -1,3 +1,6 @@
+import { createLink } from "@/app/use-cases/create-link"
+import { ResourceAlreadyExistsError } from "@/app/use-cases/errors/resource-already-exists.error"
+import { isRight, unwrapEither } from "@/shared/either"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 
@@ -8,20 +11,31 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
       schema: {
         summary: "Create a new link",
         body: z.object({
-          originalUrl: z.string().url(),
-          shortenedUrl: z
+          originalUrl: z.string().url("URL inválida"),
+          slug: z
             .string()
-            .regex(/^[a-zA-Z0-9-]+$/)
-            .min(3),
+            .regex(
+              /^[a-zA-Z0-9-]+$/,
+              "A URL encurtada deve conter apenas letras, números e hífen"
+            )
+            .min(3, "A URL encurtada deve ter pelo menos 3 caracteres"),
         }),
         response: {
           201: z.object({
             originalUrl: z.string(),
-            shortenedUrl: z.string(),
+            slug: z.string(),
             visits: z.number(),
           }),
           400: z
-            .object({ message: z.string() })
+            .object({
+              message: z.string(),
+              issues: z.array(
+                z.object({
+                  field: z.string(),
+                  message: z.string(),
+                })
+              ),
+            })
             .describe("Invalid request body"),
           409: z
             .object({ message: z.string() })
@@ -33,13 +47,22 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
       },
     },
     async (request, reply) => {
-      const { originalUrl, shortenedUrl } = request.body
+      const { originalUrl, slug } = request.body
 
-      return reply.status(201).send({
-        originalUrl,
-        shortenedUrl,
-        visits: 0,
-      })
+      const result = await createLink({ originalUrl, slug })
+
+      if (isRight(result)) {
+        const { link } = unwrapEither(result)
+        return reply.status(201).send(link)
+      }
+
+      const error = unwrapEither(result)
+      switch (error.name) {
+        case ResourceAlreadyExistsError.name:
+          return reply.status(409).send({ message: error.message })
+        default:
+          return reply.status(500).send({ message: "Internal server error" })
+      }
     }
   )
 }

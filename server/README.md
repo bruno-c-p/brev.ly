@@ -2,9 +2,9 @@
 In this back-end project, an API will be developed to manage URL shortening.
 
 ## Features and Rules
-- [ ]  It should be possible to create a link
-    - [ ]  It should not be possible to create a link with a poorly formatted shortened URL
-    - [ ]  It should not be possible to create a link with an already existing shortened URL
+- [x]  It should be possible to create a link
+    - [x]  It should not be possible to create a link with a poorly formatted shortened URL
+    - [x]  It should not be possible to create a link with an already existing shortened URL
 - [ ]  It should be possible to delete a link
 - [ ]  It should be possible to obtain the original URL through a shortened URL
 - [ ]  It should be possible to list all registered URLs

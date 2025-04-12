@@ -17,11 +17,15 @@ const server = fastify()
 server.setValidatorCompiler(validatorCompiler)
 server.setSerializerCompiler(serializerCompiler)
 
-server.setErrorHandler((error, request, reply) => {
+server.setErrorHandler((error, _request, reply) => {
   if (hasZodFastifySchemaValidationErrors(error)) {
+    const issues = error.validation.map(issue => ({
+      field: issue.instancePath.substring(1),
+      message: issue.message,
+    }))
     return reply.status(400).send({
       message: "Validation error",
-      issues: error.validation,
+      issues,
     })
   }
   console.error(error)
