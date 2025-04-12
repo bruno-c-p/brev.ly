@@ -20,13 +20,16 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
             shortenedUrl: z.string(),
             visits: z.number(),
           }),
+          400: z
+            .object({ message: z.string() })
+            .describe("Invalid request body"),
           409: z
             .object({ message: z.string() })
             .describe("Shortened URL already exists"),
+          500: z
+            .object({ message: z.string() })
+            .describe("Internal server error"),
         },
-        500: z
-          .object({ message: z.string() })
-          .describe("Internal server error"),
       },
     },
     async (request, reply) => {
