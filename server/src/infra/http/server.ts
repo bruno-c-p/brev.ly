@@ -10,6 +10,7 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod"
 import { createLinkRoute } from "./routes/create-link"
+import { deleteLinkRoute } from "./routes/delete-link"
 
 const server = fastify()
 
@@ -23,7 +24,7 @@ server.setErrorHandler((error, _request, reply) => {
       message: issue.message,
     }))
     return reply.status(400).send({
-      message: "Validation error",
+      message: "Validation error.",
       issues,
     })
   }
@@ -47,6 +48,7 @@ server.register(fastifySwaggerUi, {
 })
 
 server.register(createLinkRoute)
+server.register(deleteLinkRoute)
 
 server.listen({ port: env.PORT, host: "0.0.0.0" }).then(() => {
   console.log(`🔥 HTTP Server running on port ${env.PORT}`)

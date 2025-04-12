@@ -1,17 +1,16 @@
-import { createLink } from "@/app/use-cases/create-link"
-import { ResourceAlreadyExistsError } from "@/app/use-cases/errors/resource-already-exists.error"
+import { deleteLink } from "@/app/use-cases/delete-link"
+import { ResourceNotFoundError } from "@/app/use-cases/errors/resource-not-found.error"
 import { isRight, unwrapEither } from "@/shared/either"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 
-export const createLinkRoute: FastifyPluginAsyncZod = async server => {
-  server.post(
-    "/links",
+export const deleteLinkRoute: FastifyPluginAsyncZod = async server => {
+  server.delete(
+    "/links/:slug",
     {
       schema: {
-        summary: "Create a new link",
-        body: z.object({
-          originalUrl: z.string().url("URL inválida"),
+        summary: "Delete a link",
+        params: z.object({
           slug: z
             .string()
             .regex(
@@ -21,11 +20,7 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
             .min(3, "A URL encurtada deve ter pelo menos 3 caracteres"),
         }),
         response: {
-          201: z.object({
-            originalUrl: z.string(),
-            slug: z.string(),
-            visits: z.number(),
-          }),
+          204: z.undefined(),
           400: z
             .object({
               message: z.string(),
@@ -36,10 +31,10 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
                 })
               ),
             })
-            .describe("Invalid request body"),
-          409: z
+            .describe("Invalid request params"),
+          404: z
             .object({ message: z.string() })
-            .describe("Shortened URL already exists"),
+            .describe("Shortened URL not found"),
           500: z
             .object({ message: z.string() })
             .describe("Internal server error"),
@@ -47,19 +42,18 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
       },
     },
     async (request, reply) => {
-      const { originalUrl, slug } = request.body
+      const { slug } = request.params
 
-      const result = await createLink({ originalUrl, slug })
+      const result = await deleteLink({ slug })
 
       if (isRight(result)) {
-        const { link } = unwrapEither(result)
-        return reply.status(201).send(link)
+        return reply.status(204).send()
       }
 
       const error = unwrapEither(result)
       switch (error.name) {
-        case ResourceAlreadyExistsError.name:
-          return reply.status(409).send({ message: error.message })
+        case ResourceNotFoundError.name:
+          return reply.status(404).send({ message: error.message })
         default:
           throw new Error("Internal server error")
       }
