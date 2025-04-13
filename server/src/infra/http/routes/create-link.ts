@@ -9,6 +9,7 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
     "/links",
     {
       schema: {
+        tags: ["Links"],
         summary: "Create a new link",
         body: z.object({
           originalUrl: z.string().url("URL inválida"),
@@ -21,11 +22,13 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
             .min(3, "A URL encurtada deve ter pelo menos 3 caracteres"),
         }),
         response: {
-          201: z.object({
-            originalUrl: z.string(),
-            slug: z.string(),
-            visits: z.number(),
-          }),
+          201: z
+            .object({
+              originalUrl: z.string(),
+              slug: z.string(),
+              visits: z.number(),
+            })
+            .describe("Created link"),
           400: z
             .object({
               message: z.string(),

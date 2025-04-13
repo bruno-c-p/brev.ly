@@ -9,6 +9,7 @@ export const deleteLinkRoute: FastifyPluginAsyncZod = async server => {
     "/links/:slug",
     {
       schema: {
+        tags: ["Links"],
         summary: "Delete a link",
         params: z.object({
           slug: z
@@ -20,7 +21,7 @@ export const deleteLinkRoute: FastifyPluginAsyncZod = async server => {
             .min(3, "A URL encurtada deve ter pelo menos 3 caracteres"),
         }),
         response: {
-          204: z.undefined(),
+          204: z.undefined().describe("Link deleted successfully"),
           400: z
             .object({
               message: z.string(),
