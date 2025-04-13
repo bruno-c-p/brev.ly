@@ -22,7 +22,6 @@ server.setValidatorCompiler(validatorCompiler)
 server.setSerializerCompiler(serializerCompiler)
 
 server.register(fastifyCors, { origin: "*" })
-server.register(fastifyWebsocket)
 server.register(fastifySwagger, swaggerConfig)
 server.register(fastifySwaggerUi, { routePrefix: "/docs" })
 
