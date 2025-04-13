@@ -1,6 +1,6 @@
 import { getAllLinks } from "@/app/use-cases/get-all-links"
-import { unwrapEither } from "@/shared/either"
-import { internalErrorSchema, linkResponseSchema } from "@/shared/schemas"
+import { unwrapEither } from "@/infra/shared/either"
+import { internalErrorSchema, linkResponseSchema } from "@/infra/shared/schemas"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 

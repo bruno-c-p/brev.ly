@@ -11,11 +11,11 @@ In this back-end project, an API will be developed to manage URL shortening.
 - [x]  It should be possible to obtain the original URL through a shortened URL
     - [x]  It should be possible to increment the number of accesses to a link
 
-- [ ]  It should be possible to export the created links in a CSV
-    - [ ]  The CSV should be accessible via a CDN (Amazon S3, Cloudflare R2, etc)
-    - [ ]  A random and unique name should be generated for the file
-    - [ ]  It should be possible to perform the listing efficiently
-    - [ ]  The CSV should have fields such as original URL, shortened URL, access count, and creation date.
+- [x]  It should be possible to export the created links in a CSV
+    - [x]  The CSV should be accessible via a CDN (Amazon S3, Cloudflare R2, etc)
+    - [x]  A random and unique name should be generated for the file
+    - [x]  It should be possible to perform the listing efficiently
+    - [x]  The CSV should have fields such as original URL, shortened URL, access count, and creation date.
 
 - [x] It should build a `Dockerfile` following best practices:
     - [x] It should use multi-stage builds to minimize image size

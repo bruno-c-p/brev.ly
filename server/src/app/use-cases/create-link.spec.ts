@@ -1,6 +1,6 @@
 import { db } from "@/infra/db"
 import { schema } from "@/infra/db/schemas"
-import { isRight, unwrapEither } from "@/shared/either"
+import { isRight, unwrapEither } from "@/infra/shared/either"
 import { eq } from "drizzle-orm"
 import { uuidv7 } from "uuidv7"
 import { describe, expect, it } from "vitest"

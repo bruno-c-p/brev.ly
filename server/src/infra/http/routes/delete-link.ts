@@ -1,12 +1,12 @@
 import { deleteLink } from "@/app/use-cases/delete-link"
 import { ResourceNotFoundError } from "@/app/use-cases/errors/resource-not-found.error"
-import { isRight, unwrapEither } from "@/shared/either"
+import { isRight, unwrapEither } from "@/infra/shared/either"
 import {
   deleteLinkSchema,
   internalErrorSchema,
   notFoundErrorSchema,
   validationErrorSchema,
-} from "@/shared/schemas"
+} from "@/infra/shared/schemas"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 

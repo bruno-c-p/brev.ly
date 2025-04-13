@@ -1,4 +1,4 @@
-import { isRight, unwrapEither } from "@/shared/either"
+import { isRight, unwrapEither } from "@/infra/shared/either"
 import { makeLink } from "@/test/factories/make-link"
 import { uuidv7 } from "uuidv7"
 import { describe, expect, it } from "vitest"

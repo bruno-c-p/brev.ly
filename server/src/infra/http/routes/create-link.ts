@@ -1,13 +1,13 @@
 import { createLink } from "@/app/use-cases/create-link"
 import { ResourceAlreadyExistsError } from "@/app/use-cases/errors/resource-already-exists.error"
-import { isRight, unwrapEither } from "@/shared/either"
+import { isRight, unwrapEither } from "@/infra/shared/either"
 import {
   conflictErrorSchema,
   createLinkSchema,
   internalErrorSchema,
   linkResponseSchema,
   validationErrorSchema,
-} from "@/shared/schemas"
+} from "@/infra/shared/schemas"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 
 export const createLinkRoute: FastifyPluginAsyncZod = async server => {

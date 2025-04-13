@@ -1,11 +1,11 @@
 import { ResourceNotFoundError } from "@/app/use-cases/errors/resource-not-found.error"
 import { redirectLink } from "@/app/use-cases/redirect-link"
-import { isRight, unwrapEither } from "@/shared/either"
+import { isRight, unwrapEither } from "@/infra/shared/either"
 import {
   internalErrorSchema,
   notFoundErrorSchema,
   slugSchema,
-} from "@/shared/schemas"
+} from "@/infra/shared/schemas"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 
