@@ -1,5 +1,6 @@
 import { getAllLinks } from "@/app/use-cases/get-all-links"
-import { isRight, unwrapEither } from "@/shared/either"
+import { unwrapEither } from "@/shared/either"
+import { internalErrorSchema, linkResponseSchema } from "@/shared/schemas"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 
@@ -11,18 +12,8 @@ export const getAllLinksRoute: FastifyPluginAsyncZod = async server => {
         tags: ["Links"],
         summary: "Get all links",
         response: {
-          200: z
-            .array(
-              z.object({
-                originalUrl: z.string(),
-                slug: z.string(),
-                visits: z.number(),
-              })
-            )
-            .describe("List of links"),
-          500: z
-            .object({ message: z.string() })
-            .describe("Internal server error"),
+          200: z.array(linkResponseSchema).describe("List of links"),
+          500: internalErrorSchema,
         },
       },
     },

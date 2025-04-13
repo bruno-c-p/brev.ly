@@ -1,20 +1,17 @@
 import { db } from "@/infra/db"
 import { schema } from "@/infra/db/schemas"
 import { type Either, makeLeft, makeRight } from "@/shared/either"
+import { redirectLinkSchema } from "@/shared/schemas"
 import { eq } from "drizzle-orm"
-import { z } from "zod"
+import type { z } from "zod"
 import { ResourceNotFoundError } from "./errors/resource-not-found.error"
 
-const redirectLinkInput = z.object({
-  slug: z.string(),
-})
-
-type RedirectLinkInput = z.input<typeof redirectLinkInput>
+type RedirectLinkInput = z.infer<typeof redirectLinkSchema>
 
 export async function redirectLink(
   input: RedirectLinkInput
 ): Promise<Either<ResourceNotFoundError, { originalUrl: string }>> {
-  const { slug } = redirectLinkInput.parse(input)
+  const { slug } = redirectLinkSchema.parse(input)
   const [link] = await db
     .select()
     .from(schema.link)

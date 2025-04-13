@@ -1,8 +1,7 @@
 import { env } from "@/env"
 import { fastifyCors } from "@fastify/cors"
 import { fastifySwagger } from "@fastify/swagger"
-import { fastifySwaggerUi } from "@fastify/swagger-ui"
-import { fastifyWebsocket } from "@fastify/websocket"
+import scalarUI from "@scalar/fastify-api-reference"
 import { fastify } from "fastify"
 import {
   serializerCompiler,
@@ -24,7 +23,7 @@ server.setSerializerCompiler(serializerCompiler)
 
 server.register(fastifyCors, { origin: "*" })
 server.register(fastifySwagger, swaggerConfig)
-server.register(fastifySwaggerUi, { routePrefix: "/docs" })
+server.register(scalarUI, { routePrefix: "/docs" })
 
 server.register(createLinkRoute)
 server.register(deleteLinkRoute)

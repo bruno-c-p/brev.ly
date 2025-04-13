@@ -1,8 +1,14 @@
 import { createLink } from "@/app/use-cases/create-link"
 import { ResourceAlreadyExistsError } from "@/app/use-cases/errors/resource-already-exists.error"
 import { isRight, unwrapEither } from "@/shared/either"
+import {
+  conflictErrorSchema,
+  createLinkSchema,
+  internalErrorSchema,
+  linkResponseSchema,
+  validationErrorSchema,
+} from "@/shared/schemas"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
-import { z } from "zod"
 
 export const createLinkRoute: FastifyPluginAsyncZod = async server => {
   server.post(
@@ -11,41 +17,12 @@ export const createLinkRoute: FastifyPluginAsyncZod = async server => {
       schema: {
         tags: ["Links"],
         summary: "Create a new link",
-        body: z.object({
-          originalUrl: z.string().url("URL inválida"),
-          slug: z
-            .string()
-            .regex(
-              /^[a-zA-Z0-9-]+$/,
-              "A URL encurtada deve conter apenas letras, números e hífen"
-            )
-            .min(3, "A URL encurtada deve ter pelo menos 3 caracteres"),
-        }),
+        body: createLinkSchema,
         response: {
-          201: z
-            .object({
-              originalUrl: z.string(),
-              slug: z.string(),
-              visits: z.number(),
-            })
-            .describe("Created link"),
-          400: z
-            .object({
-              message: z.string(),
-              issues: z.array(
-                z.object({
-                  field: z.string(),
-                  message: z.string(),
-                })
-              ),
-            })
-            .describe("Invalid request body"),
-          409: z
-            .object({ message: z.string() })
-            .describe("Shortened URL already exists"),
-          500: z
-            .object({ message: z.string() })
-            .describe("Internal server error"),
+          201: linkResponseSchema.describe("Created link"),
+          400: validationErrorSchema,
+          409: conflictErrorSchema,
+          500: internalErrorSchema,
         },
       },
     },

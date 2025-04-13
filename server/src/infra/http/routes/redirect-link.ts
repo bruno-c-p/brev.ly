@@ -1,6 +1,11 @@
 import { ResourceNotFoundError } from "@/app/use-cases/errors/resource-not-found.error"
 import { redirectLink } from "@/app/use-cases/redirect-link"
 import { isRight, unwrapEither } from "@/shared/either"
+import {
+  internalErrorSchema,
+  notFoundErrorSchema,
+  slugSchema,
+} from "@/shared/schemas"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 
@@ -12,10 +17,7 @@ export const redirectLinkRoute: FastifyPluginAsyncZod = async server => {
         tags: ["Links"],
         summary: "Redirect link to original URL",
         params: z.object({
-          slug: z
-            .string()
-            .regex(/^[a-zA-Z0-9-]+$/)
-            .min(3),
+          slug: slugSchema,
         }),
         response: {
           200: z
@@ -23,10 +25,8 @@ export const redirectLinkRoute: FastifyPluginAsyncZod = async server => {
               originalUrl: z.string().describe("URL to redirect to"),
             })
             .describe("Redirect information"),
-          404: z.object({ message: z.string() }).describe("Link not found"),
-          500: z
-            .object({ message: z.string() })
-            .describe("Internal server error"),
+          404: notFoundErrorSchema.describe("Link not found"),
+          500: internalErrorSchema,
         },
       },
     },
