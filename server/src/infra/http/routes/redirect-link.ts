@@ -25,6 +25,17 @@ export const redirectLinkRoute: FastifyPluginAsyncZod = async server => {
               originalUrl: z.string().describe("URL to redirect to"),
             })
             .describe("Redirect information"),
+          400: z
+            .object({
+              message: z.string(),
+              issues: z.array(
+                z.object({
+                  field: z.string(),
+                  message: z.string(),
+                })
+              ),
+            })
+            .describe("Invalid request params"),
           404: notFoundErrorSchema.describe("Link not found"),
           500: internalErrorSchema,
         },

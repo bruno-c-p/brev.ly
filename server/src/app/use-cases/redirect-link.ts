@@ -12,6 +12,7 @@ export async function redirectLink(
   input: RedirectLinkInput
 ): Promise<Either<ResourceNotFoundError, { originalUrl: string }>> {
   const { slug } = redirectLinkSchema.parse(input)
+
   const [link] = await db
     .select()
     .from(schema.link)

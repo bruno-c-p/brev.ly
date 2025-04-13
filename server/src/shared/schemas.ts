@@ -21,7 +21,7 @@ export const deleteLinkSchema = z.object({
 })
 
 export const redirectLinkSchema = z.object({
-  slug: z.string(),
+  slug: slugSchema,
 })
 
 export const linkResponseSchema = z.object({
