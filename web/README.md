@@ -25,9 +25,3 @@ This application has 3 pages:
 - The root page (`/`) that displays the registration form and the list of registered links;
 - The redirection page (`/:shortened-url`) that retrieves the dynamic value of the URL and searches the API for that shortened URL;
 - The not found resource page (any page that does not follow the above pattern) that is displayed if the user types the wrong address or the provided shortened URL does not exist.
-
-## Ideas
-
-- Metadata: This type of application greatly benefits from some metadata, and an interesting one that we haven't explored is related to the OpenGraph protocol. It would be interesting if the registration form also included data such as link description and preview image that could be used in this metadata.
-- Image upload: Using the previous point as a basis, uploading images for the OpenGraph protocol can be quite interesting.
-- Optimistic interface: One aspect that can enhance the experience in this type of application is to work with an optimistic interface. Display the link in the interface as if the registration in the API was successful, and if there is an error, perform a `rollback`.
