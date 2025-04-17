@@ -6,7 +6,7 @@ const envSchema = z.object({
   // Environment
   NODE_ENV: z.enum(["development", "test", "production"]).default("production"),
   // Database
-  DATABASE_URL: z.string().url().startsWith("postgresql://"),
+  DATABASE_URL: z.string().url(),
   // Cloudflare
   CLOUDFLARE_ACCOUNT_ID: z.string(),
   CLOUDFLARE_ACCESS_KEY_ID: z.string(),
