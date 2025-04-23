@@ -42,20 +42,15 @@ export const redirectLinkRoute: FastifyPluginAsyncZod = async server => {
       },
     },
     async (request, reply) => {
-      const { referer } = request.headers
       const { slug } = request.params
 
       const result = await redirectLink({ slug })
 
       if (isRight(result)) {
         const { originalUrl } = unwrapEither(result)
-
-        const isSwaggerRequest = referer?.includes("/docs")
-        if (isSwaggerRequest) {
-          return { originalUrl }
+        return {
+          originalUrl,
         }
-
-        return reply.redirect(originalUrl)
       }
 
       const error = unwrapEither(result)
