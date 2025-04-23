@@ -4,7 +4,6 @@ import { env } from '@/env'
 import { Copy, Trash } from '@phosphor-icons/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
-import { Link as RouterLink } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Button } from './button'
 
@@ -58,12 +57,17 @@ export function LinkItem({ link }: LinkItemProps) {
 
   return (
     <li className="flex items-center gap-3 py-4 border-t border-gray-200">
-      <RouterLink to={`/${slug}`} className="flex-1 min-w-0">
+      <a
+        href={`${env.VITE_APP_URL}/${slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex-1 min-w-0"
+      >
         <p className="text-blue-base font-medium text-sm line-clamp-1">
           brev.ly/{slug}
         </p>
         <p className="text-xs text-gray-500 line-clamp-1">{originalUrl}</p>
-      </RouterLink>
+      </a>
 
       <span className="text-xs text-gray-500 mr-5">{visits} acessos</span>
 

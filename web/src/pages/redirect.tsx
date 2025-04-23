@@ -8,21 +8,25 @@ import { NotFound } from './not-found'
 export function Redirect() {
   const { slug } = useParams<{ slug: string }>() || {}
 
-  if (!slug) {
-    return <NotFound />
-  }
+  if (!slug) return <NotFound />
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, error } = useQuery({
     queryKey: ['redirect', slug],
     queryFn: () => getLink(slug),
     retry: false,
+    enabled: !!slug,
   })
 
   useEffect(() => {
     if (data?.originalUrl) {
-      window.location.href = data.originalUrl
+      const timeout = setTimeout(() => {
+        window.location.href = data.originalUrl
+      }, 1000)
+      return () => clearTimeout(timeout)
     }
   }, [data])
+
+  if (!slug) return <NotFound />
 
   if (isLoading) {
     return (
@@ -34,7 +38,6 @@ export function Redirect() {
           <h2 className="text-2xl font-bold text-gray-600 mt-8">
             Redirecionando...
           </h2>
-
           <p className="text-gray-500 mt-4">
             Você será redirecionado para o link original em instantes.
           </p>
@@ -43,5 +46,8 @@ export function Redirect() {
     )
   }
 
-  return <NotFound />
+  if (error) return <NotFound />
+
+  // Enquanto não redireciona, pode mostrar loading ou nada
+  return null
 }
