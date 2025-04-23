@@ -2,6 +2,7 @@ import { createLink } from '@/api/create-link'
 import type { Link } from '@/api/get-links'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -27,6 +28,7 @@ export function CreateLinkForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<CreateLinkFormSchema>({
     resolver: zodResolver(createLinkFormSchema),
@@ -43,7 +45,7 @@ export function CreateLinkForm() {
       const previousLinks = queryClient.getQueryData(['links'])
       queryClient.setQueryData(['links'], (oldLinks: Link[] = []) => [
         ...oldLinks,
-        newLink,
+        { ...newLink, visits: 0 },
       ])
       return { previousLinks }
     },
@@ -64,7 +66,13 @@ export function CreateLinkForm() {
         slug: data.shortUrl,
       })
       toast.success('Link encurtado com sucesso!')
+      reset()
     } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message)
+        reset()
+        return
+      }
       console.error(error)
       toast.error('Erro ao encurtar link!')
     }
@@ -72,11 +80,11 @@ export function CreateLinkForm() {
 
   return (
     <form
-      className="w-full bg-gray-100 p-6 rounded-lg"
+      className="w-full bg-gray-100 p-6 rounded-lg max-w-96"
       onSubmit={handleSubmit(handleCreateLink)}
     >
       <fieldset>
-        <legend className="text-2xl text-gray-600 font-bold">Novo link</legend>
+        <legend className="text-lg text-gray-600 font-bold">Novo link</legend>
         <div className="mt-5">
           <Input.Label error={!!errors.originalUrl}>
             LINK ORIGINAL

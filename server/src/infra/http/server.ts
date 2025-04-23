@@ -23,11 +23,11 @@ server.setValidatorCompiler(validatorCompiler)
 server.setSerializerCompiler(serializerCompiler)
 
 server.register(fastifyCors, {
-  origin: ["http://localhost:5173", "https://brevly.brunocardozo.com.br"],
+  origin: ["https://brevly.brunocardozo.com.br"],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
   preflight: true,
-  preflightContinue: false,
+  preflightContinue: true,
 })
 server.register(fastifySwagger, swaggerConfig)
 server.register(scalarUI, { routePrefix: "/docs" })

@@ -12,4 +12,14 @@
     --color-gray-600: #1F2025;
     --color-danger: #B12C4D;
     --font-sans: "Open Sans", "sans-serif";
+
+    --animate-loading: loading 1.5s ease-in-out infinite;
+    @keyframes loading {
+      0% {
+        left: -30%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
 }
