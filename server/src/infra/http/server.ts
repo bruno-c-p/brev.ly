@@ -23,7 +23,8 @@ server.setValidatorCompiler(validatorCompiler)
 server.setSerializerCompiler(serializerCompiler)
 
 server.register(fastifyCors, {
-  origin: ["*"],
+  origin: env.CORS_ORIGINS,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 })
 server.register(fastifySwagger, swaggerConfig)
 server.register(scalarUI, { routePrefix: "/docs" })

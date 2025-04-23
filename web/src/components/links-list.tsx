@@ -69,7 +69,7 @@ export function LinksList() {
             <p className="text-gray-400">Carregando links...</p>
           </div>
         ) : links?.length === 0 ? (
-          <p className="text-gray-400 flex flex-col gap-4 pt-5 items-center border-t border-gray-200 text-sm mt-5 uppercase">
+          <p className="text-gray-400 flex flex-col gap-4 pt-5 items-center border-t border-gray-200 text-xs mt-5 uppercase">
             <Link size={32} />
             Ainda não há links cadastrados.
           </p>

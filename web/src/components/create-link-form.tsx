@@ -107,7 +107,7 @@ export function CreateLinkForm() {
             <Input.Root
               error={!!errors.shortUrl}
               aria-errormessage={errors.shortUrl?.message}
-              className="flex items-center gap-1"
+              className="flex items-center gap-[1px]"
             >
               <Input.Prefix>brev.ly/</Input.Prefix>
               <Input.Control type="text" {...register('shortUrl')} />
